@@ -108,8 +108,8 @@ public class LocationDetails extends AppCompatActivity {
                     lat.setText("Latitude: " + location.getLatitude());
                     longi.setText("Longitude: " + location.getLongitude());
                     alti.setText("Altitude: " + location.getAltitude());
-                    double lati2=47007;
-                    double long2=-741445;
+                    double lati2=4.697390;
+                    double long2=-74.138155;
 
                     double distance=distance( location.getLatitude(),  location.getLongitude(), lati2 ,  long2);
                     txt_distance.setText( "Distancia al Aereopuerto:  "+ distance);
