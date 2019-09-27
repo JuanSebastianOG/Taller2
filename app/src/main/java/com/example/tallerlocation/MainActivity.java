@@ -24,13 +24,16 @@ public class MainActivity extends AppCompatActivity {
 
         btn_location=(ImageButton) findViewById(R.id.btn_location);
 
-
-
         btn_location.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
                 askPermission();
+                if (ContextCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                    Toast.makeText(getApplicationContext(), "Debe aceptar permiso de localizacion", Toast.LENGTH_LONG).show();
+                } else {
+                    Intent intent = new Intent(getApplicationContext(),LocationDetails.class);
+                    startActivity(intent);
+                }
             }
         });
     }
@@ -41,8 +44,6 @@ public class MainActivity extends AppCompatActivity {
             case MY_PERMISSIONS_REQUEST_READ_LOCATION: {
                 if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                     Toast.makeText(this, "Acceso a Location!", Toast.LENGTH_LONG).show();
-                    Intent intent = new Intent(this,LocationDetails.class);
-                    startActivity(intent);
                 } else {
                     //codigo si no cumple
                     Toast.makeText(this, "Funcionalidad Limitada!", Toast.LENGTH_LONG).show();
