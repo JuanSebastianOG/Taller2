@@ -34,11 +34,14 @@ import static android.Manifest.permission_group.LOCATION;
 
 public class LocationDetails extends AppCompatActivity {
     public static final int REQUEST_CHECK_SETTINGS = 5;
+    private static final double RADIUS_OF_EARTH_KM = 6371 ;
 
     private FusedLocationProviderClient mFusedLocationClient;
     TextView lat;
     TextView longi;
     TextView alti;
+    TextView txt_distance;
+
     private LocationRequest mLocationRequest;
 
     private LocationCallback mLocationCallback;
@@ -52,6 +55,8 @@ public class LocationDetails extends AppCompatActivity {
         lat = findViewById(R.id.latitude);
         longi = findViewById(R.id.longitud);
         alti = findViewById(R.id.altitude);
+        txt_distance = findViewById(R.id.txt_distance);
+
         mLocationRequest = createLocationRequest();
 
         lat.setText("Latitude: ");
@@ -69,6 +74,7 @@ public class LocationDetails extends AppCompatActivity {
                 startLocationUpdates(); //Todas las condiciones para recibir localizaciones
             }
         });
+
         task.addOnFailureListener(this, new OnFailureListener() {
             @Override
             public void onFailure(@NonNull Exception e) {
@@ -102,6 +108,12 @@ public class LocationDetails extends AppCompatActivity {
                     lat.setText("Latitude: " + location.getLatitude());
                     longi.setText("Longitude: " + location.getLongitude());
                     alti.setText("Altitude: " + location.getAltitude());
+                    double lati2=47007;
+                    double long2=-741445;
+
+                    double distance=distance( location.getLatitude(),  location.getLongitude(), lati2 ,  long2);
+                    txt_distance.setText( "Distancia al Aereopuerto:  "+ distance);
+
                 }
             }
         };
@@ -154,7 +166,30 @@ public class LocationDetails extends AppCompatActivity {
             }
         }
     }
+    @Override
+    protected void onResume() {
+        super.onResume();
+        startLocationUpdates();
+    }
+    @Override
+    protected void onPause() {
+        super.onPause();
+        stopLocationUpdates();
+    }
+    private void stopLocationUpdates(){
+        mFusedLocationClient.removeLocationUpdates(mLocationCallback);
+    }
 
+    public double distance(double lat1, double long1, double lat2, double long2) {
+        double latDistance = Math.toRadians(lat1 - lat2);
+        double lngDistance = Math.toRadians(long1 - long2);
+        double a = Math.sin(latDistance / 2) * Math.sin(latDistance / 2)
+                + Math.cos(Math.toRadians(lat1)) * Math.cos(Math.toRadians(lat2))
+                * Math.sin(lngDistance / 2) * Math.sin(lngDistance / 2);
+        double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+        double result = RADIUS_OF_EARTH_KM * c;
+        return Math.round(result*100.0)/100.0;
+    }
 
 }
 
