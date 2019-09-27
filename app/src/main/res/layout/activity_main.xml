@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MainActivity"
+    android:orientation="vertical"
+    android:layout_marginBottom="50dp"
+   >
+
+    <ImageButton
+        android:id="@+id/btn_contacts"
+        android:layout_width="225dp"
+        android:layout_height="156dp"
+        android:layout_marginStart="91dp"
+        android:layout_marginTop="50dp"
+        android:layout_marginEnd="92dp"
+        android:layout_marginBottom="34dp"
+        android:background="@mipmap/contacts_foreground"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <ImageButton
+        android:id="@+id/btn_images"
+        android:layout_width="wrap_content"
+        android:layout_height="162dp"
+        android:layout_marginStart="91dp"
+        android:layout_marginEnd="92dp"
+        android:layout_marginBottom="34dp"
+        android:background="@drawable/camera"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <ImageButton
+        android:id="@+id/btn_location"
+        android:layout_width="228dp"
+        android:layout_height="169dp"
+        android:layout_marginStart="91dp"
+        android:layout_marginEnd="92dp"
+        android:layout_marginBottom="34dp"
+        android:background="@mipmap/locations_foreground"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+</LinearLayout
+    >
