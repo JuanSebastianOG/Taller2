@@ -33,19 +33,13 @@ public class MainActivity extends AppCompatActivity {
         btn_location.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                askPermission();
-                if (ContextCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-                    Toast.makeText(getApplicationContext(), "Debe aceptar permiso de localizacion", Toast.LENGTH_LONG).show();
-                } else {
-                    Intent intent = new Intent(getApplicationContext(),LocationDetails.class);
-                    startActivity(intent);
-                }
+                askPermission(MY_PERMISSIONS_REQUEST_READ_LOCATION);
             }
         });
         btn_images.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                askPermission(MY_PERMISSIONS_REQUEST_READ_CAMERA);
             }
         });
     }
@@ -56,6 +50,8 @@ public class MainActivity extends AppCompatActivity {
             case MY_PERMISSIONS_REQUEST_READ_LOCATION: {
                 if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                     Toast.makeText(this, "Acceso a Location!", Toast.LENGTH_LONG).show();
+                    Intent intent = new Intent(getApplicationContext(),LocationDetails.class);
+                    startActivity(intent);
                 } else {
                     //codigo si no cumple
                     Toast.makeText(this, "Funcionalidad Limitada!", Toast.LENGTH_LONG).show();
@@ -64,6 +60,8 @@ public class MainActivity extends AppCompatActivity {
             case MY_PERMISSIONS_REQUEST_READ_CAMERA: {
                 if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                     Toast.makeText(this, "Acceso a camara!", Toast.LENGTH_LONG).show();
+                    Intent intent = new Intent(getApplicationContext(),Camera.class);
+                    startActivity(intent);
                 } else {
                     //codigo si no cumple
                     Toast.makeText(this, "Funcionalidad Limitada!", Toast.LENGTH_LONG).show();
@@ -74,15 +72,10 @@ public class MainActivity extends AppCompatActivity {
 
 
     private void askPermission(int idPer) {
-        if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            // Should we show an explanation?
-            if (ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.ACCESS_FINE_LOCATION)) {
-                // Show an expanation to the user *asynchronouslyÂ  Â
-                Toast.makeText(this, "Se necesita el permiso para poder mostrar la ubicación!", Toast.LENGTH_LONG).show();
-            }
+
             // Request the permission.
             if(idPer == 3){
-                
+
             }
             if(idPer == 4){
                 ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.CAMERA}, MY_PERMISSIONS_REQUEST_READ_CAMERA);
@@ -91,7 +84,7 @@ public class MainActivity extends AppCompatActivity {
             if(idPer == 5){
                 ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, MY_PERMISSIONS_REQUEST_READ_LOCATION);
             }
-        }
+
     }
 
 }
