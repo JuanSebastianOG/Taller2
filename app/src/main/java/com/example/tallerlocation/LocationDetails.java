@@ -11,6 +11,8 @@ import android.content.pm.PackageManager;
 import android.location.Location;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -30,7 +32,18 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.Writer;
+import java.util.Date;
+
 import static android.Manifest.permission_group.LOCATION;
+
 
 public class LocationDetails extends AppCompatActivity {
     public static final int REQUEST_CHECK_SETTINGS = 5;
@@ -41,10 +54,15 @@ public class LocationDetails extends AppCompatActivity {
     TextView longi;
     TextView alti;
     TextView txt_distance;
+    TextView txt_loc;
+    Button btn_guardar;
+
 
     private LocationRequest mLocationRequest;
 
     private LocationCallback mLocationCallback;
+    JSONArray localizaciones= new JSONArray();
+
 
 
     @Override
@@ -56,8 +74,9 @@ public class LocationDetails extends AppCompatActivity {
         longi = findViewById(R.id.longitud);
         alti = findViewById(R.id.altitude);
         txt_distance = findViewById(R.id.txt_distance);
-
+        txt_loc= (TextView) findViewById(R.id.txt_ubicaciones);
         mLocationRequest = createLocationRequest();
+        btn_guardar= (Button) findViewById(R.id.btn_guardar);
 
         lat.setText("Latitude: ");
         longi.setText("Longitude: ");
@@ -101,7 +120,9 @@ public class LocationDetails extends AppCompatActivity {
         mLocationCallback = new LocationCallback() {
             @Override
             public void onLocationResult(LocationResult locationResult) {
+
                 Location location = locationResult.getLastLocation();
+
                 Log.i("LOCATION", "Location update in the callback: " + location);
                 if (location != null) {
                     Toast.makeText(getApplicationContext(), "Funciona!", Toast.LENGTH_LONG).show();
@@ -114,25 +135,33 @@ public class LocationDetails extends AppCompatActivity {
                     double distance=distance( location.getLatitude(),  location.getLongitude(), lati2 ,  long2);
                     txt_distance.setText( "Distancia al Aereopuerto:  "+ distance);
 
+                    MyLocation myLocation = new MyLocation();
+                    myLocation.setFecha(new Date(System.currentTimeMillis()));
+                    myLocation.setLatitud(location.getLatitude());
+                    myLocation.setLongitud(location.getLongitude());
+                    localizaciones.put(myLocation.toJSON());
+
+                    txt_loc.setText(txt_loc.getText()+"\n"+String.valueOf(myLocation.toJSON()));
+
+
+
+
+
                 }
             }
         };
+        btn_guardar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                try {
+                    writeJSONObject();
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
 
 
-        //mFusedLocationClient.getLastLocation().addOnSuccessListener(this, new
-        //      OnSuccessListener<Location>() {
-        //        @Override
-        //      public void onSuccess(Location location) {
-        //        Log.i("LOCATION", "onSuccess location");
-        //      if (location != null) {
-        //        Toast.makeText(getApplicationContext(), "Funciona!", Toast.LENGTH_LONG).show();
-        //      lat.setText(String.valueOf(location.getLatitude()));
-        //    longi.setText(String.valueOf(location.getLongitude()));
-        //  alti.setText(String.valueOf(location.getAltitude()));
-        //}
-        //}
-        //}
-        //);
     }
 
     protected LocationRequest createLocationRequest() {
@@ -190,6 +219,24 @@ public class LocationDetails extends AppCompatActivity {
         double result = RADIUS_OF_EARTH_KM * c;
         return Math.round(result*100.0)/100.0;
     }
+    private void writeJSONObject() throws JSONException {
+
+        Writer output = null;
+        String filename= "locations.json";
+        try {
+            File file = new File(getBaseContext().getExternalFilesDir(null), filename);
+            Log.i("LOCATION", "Ubicacion de archivo: "+file);
+            output = new BufferedWriter(new FileWriter(file));
+            output.write(localizaciones.toString());
+            output.close();
+            Toast.makeText(getApplicationContext(), "Location saved",
+                    Toast.LENGTH_LONG).show();
+        } catch (Exception e) {
+            Toast.makeText(getBaseContext(), e.getMessage(), Toast.LENGTH_LONG).show();
+        }
+
+    }
+
 
 }
 
