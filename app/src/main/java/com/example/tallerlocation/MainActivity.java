@@ -18,24 +18,44 @@ import java.util.Date;
 public class MainActivity extends AppCompatActivity {
 
     public static final int MY_PERMISSIONS_REQUEST_READ_LOCATION = 5;
+    private static final int MY_PERMISSIONS_REQUEST_READ_CAMERA =4 ;
+    public static final int MY_PERMISSIONS_READ_CONTACTS = 3;
     ImageButton btn_location;
+    ImageButton btn_images;
+    ImageButton btn_contacts;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
         btn_location=(ImageButton) findViewById(R.id.btn_location);
+        btn_images=(ImageButton) findViewById(R.id.btn_images);
+        btn_contacts=(ImageButton) findViewById(R.id.btn_contacts);
 
         btn_location.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                askPermission();
+                askPermission(5);
                 if (ContextCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
                     Toast.makeText(getApplicationContext(), "Debe aceptar permiso de localizacion", Toast.LENGTH_LONG).show();
                 } else {
                     Intent intent = new Intent(getApplicationContext(),LocationDetails.class);
                     startActivity(intent);
                 }
+            }
+        });
+        btn_images.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
+
+        btn_contacts.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                askPermission(3);
             }
         });
     }
@@ -46,6 +66,25 @@ public class MainActivity extends AppCompatActivity {
             case MY_PERMISSIONS_REQUEST_READ_LOCATION: {
                 if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                     Toast.makeText(this, "Acceso a Location!", Toast.LENGTH_LONG).show();
+
+                } else {
+                    //codigo si no cumple
+                    Toast.makeText(this, "Funcionalidad Limitada!", Toast.LENGTH_LONG).show();
+                }
+            }
+            case MY_PERMISSIONS_READ_CONTACTS: {
+                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    Toast.makeText(this, "Acceso a Contactos!", Toast.LENGTH_LONG).show();
+                    Intent intent = new Intent(getApplicationContext(),Contacts.class);
+                    startActivity(intent);
+                } else {
+                    //codigo si no cumple
+                    Toast.makeText(this, "Funcionalidad Limitada con Contactos!", Toast.LENGTH_LONG).show();
+                }
+            }
+            case MY_PERMISSIONS_REQUEST_READ_CAMERA: {
+                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    Toast.makeText(this, "Acceso a camara!", Toast.LENGTH_LONG).show();
                 } else {
                     //codigo si no cumple
                     Toast.makeText(this, "Funcionalidad Limitada!", Toast.LENGTH_LONG).show();
@@ -55,16 +94,20 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-    private void askPermission() {
-        if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            // Should we show an explanation?
-            if (ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.ACCESS_FINE_LOCATION)) {
-                // Show an expanation to the user *asynchronouslyÂ  Â
-                Toast.makeText(this, "Se necesita el permiso para poder mostrar la ubicación!", Toast.LENGTH_LONG).show();
-            }
+    private void askPermission(int idPer) {
+
             // Request the permission.
-            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, MY_PERMISSIONS_REQUEST_READ_LOCATION);
-        }
+            if(idPer == 3){
+                ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.READ_CONTACTS}, MY_PERMISSIONS_READ_CONTACTS);
+            }
+            if(idPer == 4){
+                ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.CAMERA}, MY_PERMISSIONS_REQUEST_READ_CAMERA);
+
+            }
+            if(idPer == 5){
+                ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, MY_PERMISSIONS_REQUEST_READ_LOCATION);
+            }
+
     }
 
 }
