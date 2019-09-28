@@ -23,6 +23,7 @@
         android:theme="@style/AppTheme">
         <activity android:name=".Camera"></activity>
         <activity android:name=".LocationDetails" />
+        <activity android:name=".Contacts" />
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
