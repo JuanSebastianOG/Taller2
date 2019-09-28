@@ -18,7 +18,10 @@ import java.util.Date;
 public class MainActivity extends AppCompatActivity {
 
     public static final int MY_PERMISSIONS_REQUEST_READ_LOCATION = 5;
+    public static final int MY_PERMISSIONS_READ_CONTACTS = 3;
+
     ImageButton btn_location;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -44,6 +47,14 @@ public class MainActivity extends AppCompatActivity {
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         switch (requestCode) {
             case MY_PERMISSIONS_REQUEST_READ_LOCATION: {
+                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    Toast.makeText(this, "Acceso a Location!", Toast.LENGTH_LONG).show();
+                } else {
+                    //codigo si no cumple
+                    Toast.makeText(this, "Funcionalidad Limitada!", Toast.LENGTH_LONG).show();
+                }
+            }
+            case MY_PERMISSIONS_READ_CONTACTS: {
                 if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                     Toast.makeText(this, "Acceso a Location!", Toast.LENGTH_LONG).show();
                 } else {
