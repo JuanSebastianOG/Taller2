@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".Camera">
+
+    <ImageView
+        android:id="@+id/img_seleccionar"
+        android:layout_width="289dp"
+        android:layout_height="289dp"
+        android:layout_marginStart="40dp"
+        android:layout_marginTop="92dp"
+        android:layout_marginEnd="40dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@color/colorPrimary" />
+
+    <Button
+        android:id="@+id/btn_seleccionar"
+        android:layout_width="138dp"
+        android:layout_height="58dp"
+        android:layout_marginStart="58dp"
+        android:layout_marginTop="186dp"
+        android:layout_marginBottom="134dp"
+        android:text="Seleccionar"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/img_seleccionar" />
+
+    <Button
+        android:id="@+id/btn_tomar"
+        android:layout_width="138dp"
+        android:layout_height="58dp"
+        android:layout_marginStart="17dp"
+        android:layout_marginTop="186dp"
+        android:layout_marginEnd="61dp"
+        android:layout_marginBottom="134dp"
+        android:text="camara"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toEndOf="@+id/btn_seleccionar"
+        app:layout_constraintTop_toBottomOf="@+id/img_seleccionar"
+        app:layout_constraintVertical_bias="0.464" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
